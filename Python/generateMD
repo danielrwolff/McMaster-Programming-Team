@@ -21,7 +21,7 @@ do
 	FILES=`find $d -type f -name "$EXTENSION"`
 	for f in $FILES 
 	do
-		echo "\`\`\`<$LANGUAGE>" >> $OUTPUT_FILE_NAME
+		echo "\`\`\` $LANGUAGE" >> $OUTPUT_FILE_NAME
 		cat "$f" >> $OUTPUT_FILE_NAME
 		echo "\`\`\`" >> $OUTPUT_FILE_NAME
 	done	

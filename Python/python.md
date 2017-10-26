@@ -1,7 +1,7 @@
 # Python Cheat Sheet
 #### Written by McMaster's Competitive Programming Team
 ## ./Data_Structures
-```<python>
+``` python
 class Heap():
     def __init__(self,A):
         self.A = A
@@ -72,7 +72,7 @@ a = [int(random.random()*10) for k in range(1+int(random.random()*15))]
 
 
 ```
-```<python>
+``` python
 # Python implementation of Binary Indexed Tree - GEEKSFORGEEKS
  
 # This code is contributed by Raju Varshney
@@ -139,7 +139,7 @@ freq[3] += 6
 updatebit(BITTree, len(freq), 3, 6)
 print("Sum of elements in arr[0..5] is " + str(getsum(BITTree,5)))
  ```
-```<python>
+``` python
 
 
 class Interval :
@@ -215,7 +215,7 @@ else : print "Overlap with [",res.low,",",res.high,"]"
 ## ./strings
 ## ./Useful_Tidbits
 ## ./Graph_Theory
-```<python>
+``` python
 def disjoint_set():
     def find(x):
         if parents[x] != x:
@@ -236,7 +236,7 @@ def disjoint_set():
 ```
 ## ./Dynamic_Programming
 ## ./Sorting
-```<python>
+``` python
 def do_quicksort(A):
     quicksort(A,0,len(A)-1)
     return A
@@ -267,7 +267,7 @@ print li
 print "Sorted"
 print do_quicksort(li)
 ```
-```<python>
+``` python
 def bucket_sort(A):
     n = len(A)
     B = [[] for i in xrange(n)]
@@ -296,7 +296,7 @@ print li
 print "Sorted"
 print bucket_sort(li)
 ```
-```<python>
+``` python
 def left(i):
     return 2*i+1
 
@@ -344,7 +344,7 @@ print a
 
 
 ```
-```<python>
+``` python
 def counting_sort(A,k,dig):
     div = 10**dig
     C = [0]*(k+1)
@@ -371,7 +371,7 @@ print li
 print "Sorted"
 print radix_sort(li,2)
 ```
-```<python>
+``` python
 import sys
 def merge_sort(a):
     mid = len(a)/2
@@ -411,7 +411,7 @@ print li
 print "Sorted"
 print merge_sort(li)
 ```
-```<python>
+``` python
 def selection_sort(a):
     for i in range(len(a)-1):
         small = a[i]
@@ -433,7 +433,7 @@ print li
 print "Sorted"
 print selection_sort(li)
 ```
-```<python>
+``` python
 def counting_sort(A,k):
     C = [0]*(k+1)
     for ele in A:
