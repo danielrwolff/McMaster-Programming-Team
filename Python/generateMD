@@ -1,0 +1,16 @@
+#!/bin/bash
+
+LANGUAGE=python
+EXTENSION=*.py
+OUTPUT_FILE_NAME=$LANGUAGE.md
+
+echo "" > $OUTPUT_FILE_NAME
+
+FILES=`find . -type f -name "$EXTENSION"`
+for f in $FILES 
+do
+	echo "\`\`\`<$LANGUAGE>" >> $OUTPUT_FILE_NAME
+	cat "$f" >> $OUTPUT_FILE_NAME
+	echo "\`\`\`" >> $OUTPUT_FILE_NAME
+
+done
