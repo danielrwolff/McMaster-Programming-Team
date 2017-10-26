@@ -1,6 +1,6 @@
-#Python Cheat Sheet
-####Written by McMaster's Competitive Programming Team
-##./Data_Structures
+# Python Cheat Sheet
+#### Written by McMaster's Competitive Programming Team
+## ./Data_Structures
 ```<python>
 class Heap():
     def __init__(self,A):
@@ -212,9 +212,9 @@ if not res : print "No overlap!"
 else : print "Overlap with [",res.low,",",res.high,"]"
 
 ```
-##./strings
-##./Useful_Tidbits
-##./Graph_Theory
+## ./strings
+## ./Useful_Tidbits
+## ./Graph_Theory
 ```<python>
 def disjoint_set():
     def find(x):
@@ -234,8 +234,8 @@ def disjoint_set():
         x,y = map(int,raw_input().split())
         union(x,y)
 ```
-##./Dynamic_Programming
-##./Sorting
+## ./Dynamic_Programming
+## ./Sorting
 ```<python>
 def do_quicksort(A):
     quicksort(A,0,len(A)-1)

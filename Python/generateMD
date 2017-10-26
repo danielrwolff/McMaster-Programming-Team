@@ -4,8 +4,8 @@ LANGUAGE=python
 EXTENSION=*.py
 OUTPUT_FILE_NAME=$LANGUAGE.md
 
-echo "#Python Cheat Sheet" > $OUTPUT_FILE_NAME
-echo "####Written by McMaster's Competitive Programming Team" >> $OUTPUT_FILE_NAME
+echo "# Python Cheat Sheet" > $OUTPUT_FILE_NAME
+echo "#### Written by McMaster's Competitive Programming Team" >> $OUTPUT_FILE_NAME
 
 DIRS=`find . -type d`
 
@@ -16,7 +16,7 @@ do
 		continue
 	fi 
 
-	echo "##$d" >> $OUTPUT_FILE_NAME
+	echo "## $d" >> $OUTPUT_FILE_NAME
 	
 	FILES=`find $d -type f -name "$EXTENSION"`
 	for f in $FILES 
