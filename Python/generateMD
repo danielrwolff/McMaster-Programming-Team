@@ -4,13 +4,26 @@ LANGUAGE=python
 EXTENSION=*.py
 OUTPUT_FILE_NAME=$LANGUAGE.md
 
-echo "" > $OUTPUT_FILE_NAME
+echo "#Python Cheat Sheet" > $OUTPUT_FILE_NAME
+echo "####Written by McMaster's Competitive Programming Team" >> $OUTPUT_FILE_NAME
 
-FILES=`find . -type f -name "$EXTENSION"`
-for f in $FILES 
+DIRS=`find . -type d`
+
+for d in $DIRS
 do
-	echo "\`\`\`<$LANGUAGE>" >> $OUTPUT_FILE_NAME
-	cat "$f" >> $OUTPUT_FILE_NAME
-	echo "\`\`\`" >> $OUTPUT_FILE_NAME
+	if [ $d = "." ]
+	then
+		continue
+	fi 
 
+	echo "##$d" >> $OUTPUT_FILE_NAME
+	
+	FILES=`find $d -type f -name "$EXTENSION"`
+	for f in $FILES 
+	do
+		echo "\`\`\`<$LANGUAGE>" >> $OUTPUT_FILE_NAME
+		cat "$f" >> $OUTPUT_FILE_NAME
+		echo "\`\`\`" >> $OUTPUT_FILE_NAME
+	done	
 done
+
