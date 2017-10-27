@@ -364,3 +364,131 @@ def buildST(a,ss,se,si):
     return st[si]
 
 
+# < Longest palindromic subsequence >
+def LPS(a,n):
+    fast = [[0 for x in xrange(n)] for y in xrange(n) ]
+    for i in xrange(n): fast[i][i] = 1
+    
+    for size in xrange(2,n+1):
+        for s in xrange(n-size+1):
+            e = s+size-1
+            if a[s] == a[e] and size == 2:
+                fast[s][e] = 2
+            elif a[s] == a[e]:
+                fast[s][e] = fast[s+1][e-1] + 2
+            else:
+                fast[s][e] = max(fast[s][e-1],fast[s+1][e])
+    print fast[0][n-1]
+
+
+# <Binary Search Recursive>
+def binSearch(a, s, e, key):
+    if s > e:
+        return -1
+    mid = (s + e)/2
+    if a[mid] == key:
+        return mid
+    elif key < a[mid]:
+        return binSearch(a, s, mid-1, key)
+    elif key > a[mid]:
+        return binSearch(a, mid+1, e, key)
+
+
+# <Binary Search Iterative>
+def binarySearch(a, s, e, key):
+    res = -1
+    while s <= e:
+        mid = (s + e)/2
+        if a[mid] == key:
+            res = mid
+            break
+        elif key < a[mid]:
+            e = mid - 1
+        elif key > a[mid]:
+            s = mid + 1
+    return res
+
+# < Fast Fibonacci >
+from math import sqrt
+
+def fib(n):
+    sqr5 = sqrt(5)
+    a = (1 + sqr5)/2
+    b = (1 - sqr5)/2
+    return int((a**n-b**n)/sqr5)
+
+# < Count Subarrays summing to 0 >
+def countSubArrays(a, n):
+    seen = {}
+
+    rs = 0
+    cnt = 0
+    for i in xrange(n):
+        rs += a[i]
+        if rs == 0: cnt += 1
+
+        if rs in seen:
+            cnt += seen[rs]
+            seen[rs] += 1
+        else:
+            seen[rs] = 1
+
+    return cnt
+
+# < Print Subbarrays summing to 0 >
+def printSubArrays(a, n):
+    seen = {}
+
+    rs = 0
+    out = []
+    for i in xrange(n):
+        rs += a[i]
+        if rs == 0: out.append((0,i))
+
+        if rs in seen:
+            for old in seen[rs]:
+                out.append((old+1,i))
+            seen[rs].append(i)
+        else:
+            seen[rs] = [i]
+
+    for pair in out:
+        print pair
+
+
+# < 2D Partial Sums >
+from Queue import Queue
+
+#Constructor
+def build2dSum(n, m, a): #rows, cols, array
+    d = [[0 for j in xrange(m)] for i in xrange(n)]
+
+    d[0][0] = a[0][0]
+    for i in xrange(1, n): d[i][0] = a[i][0] + d[i-1][0]
+    for j in xrange(1, m): d[0][j] = a[0][j] + d[0][j-1]
+
+    if n >= 2 and m >= 2:
+        q = Queue()
+        cov = set()
+        q.put((1,1))
+
+        while not q.empty():
+            r,c = q.get()
+            if (r,c) not in cov:
+                cov.add((r,c))
+                d[r][c] = a[r][c] + d[r-1][c] + d[r][c-1] - d[r-1][c-1]
+                
+                if r+1<n: q.put((r+1,c))
+                if c+1<m: q.put((r,c+1))
+    return d
+
+def sumFrom(d,r1,c1,r2,c2):
+    if r1 > 0 and c1 > 0:
+        return d[r2][c2] - d[r2][c1-1] - d[r1-1][c2] + d[r1-1][c1-1]
+    elif r1 > 0:
+        return d[r2][c2] - d[r1-1][c2]
+    elif c1 > 0:
+        return d[r2][c2] - d[r2][c1-1]
+    else:
+        return d[r2][c2]
+
