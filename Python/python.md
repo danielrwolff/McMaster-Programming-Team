@@ -140,6 +140,125 @@ updatebit(BITTree, len(freq), 3, 6)
 print("Sum of elements in arr[0..5] is " + str(getsum(BITTree,5)))
  ```
 ``` python
+# < Segment Tree >     
+import math
+
+st = []
+
+#Mid
+def mid(s,e):
+    return s + (e-s)/2
+
+#Constructor
+def ST(a,n):
+    global st
+    #Height of Tree
+    h = math.ceil(math.log(n)/float(math.log(2)))
+    max_size = 2*int(math.pow(2,h))-1
+
+    st = [0]*max_size
+
+    buildST(a,0,n-1,0)
+
+#get Max
+def getMax(ss,se,qs,qe,si):
+    global st
+    if qs <= ss and qe >= se:
+        return st[si]
+
+    if se < qs or ss > qe:
+        return 0
+
+    m = mid(ss,se)
+    return max(getMax(ss,m,qs,qe,2*si+1),getMax(m+1,se,qs,qe,2*si+2))
+
+#user friendly max :)
+def niceMax(start,end,n):
+    return getMax(0,n-1,start,end,0)
+
+
+#get first ele over num
+def overNum(ss,se,num,si):
+    global st
+    if st[si]<num:
+        return -1
+    
+    if ss == se:
+        return ss
+
+    m = mid(ss,se)
+    if st[2*si+1]>=num:
+        return overNum(ss,m,num,2*si+1)
+    else:
+        return overNum(m+1,se,num,2*si+2) 
+    
+#Construction of Segment Tree
+def buildST(a,ss,se,si):
+    global st
+    #one ele
+    if ss==se:
+        st[si] = a[ss]
+        return a[ss]
+    
+    #multiple eles
+    m = mid(ss,se)
+    st[si] = max(buildST(a,ss,m,si*2+1),buildST(a,m+1,se,si*2+2))
+    return st[si]
+
+
+# ---- Example Usage
+a = [5, 6, 2, 1, 3, 7, 10]
+ST(a, len(a))
+print niceMax(1,5,7) # Max element from a[1] -> a[5]
+```
+``` python
+# < 2D Partial Sums >
+from Queue import Queue
+
+#Constructor
+def build2dSum(n, m, a): #rows, cols, array
+    d = [[0 for j in xrange(m)] for i in xrange(n)]
+
+    d[0][0] = a[0][0]
+    for i in xrange(1, n): d[i][0] = a[i][0] + d[i-1][0]
+    for j in xrange(1, m): d[0][j] = a[0][j] + d[0][j-1]
+
+    if n >= 2 and m >= 2:
+        q = Queue()
+        cov = set()
+        q.put((1,1))
+
+        while not q.empty():
+            r,c = q.get()
+            if (r,c) not in cov:
+                cov.add((r,c))
+                d[r][c] = a[r][c] + d[r-1][c] + d[r][c-1] - d[r-1][c-1]
+                
+                if r+1<n: q.put((r+1,c))
+                if c+1<m: q.put((r,c+1))
+    return d
+
+def sumFrom(d,r1,c1,r2,c2):
+    if r1 > 0 and c1 > 0:
+        return d[r2][c2] - d[r2][c1-1] - d[r1-1][c2] + d[r1-1][c1-1]
+    elif r1 > 0:
+        return d[r2][c2] - d[r1-1][c2]
+    elif c1 > 0:
+        return d[r2][c2] - d[r2][c1-1]
+    else:
+        return d[r2][c2]
+
+
+# --- Example Usage
+a = [[1,1,1,1],
+     [1,1,1,1],
+     [1,1,1,1]]
+T = build2dSum(3,4,a)
+print sumFrom(T,0,0,0,0) #1
+print sumFrom(T,0,0,2,3) #12
+print sumFrom(T,1,0,1,3) #4
+```
+``` python
 
 
 class Interval :
@@ -212,8 +331,69 @@ if not res : print "No overlap!"
 else : print "Overlap with [",res.low,",",res.high,"]"
 
 ```
-## ./strings
 ## ./Useful_Tidbits
+``` python
+# < Fast Fibonacci >
+from math import sqrt
+
+def fib(n):
+    sqr5 = sqrt(5)
+    a = (1 + sqr5)/2
+    b = (1 - sqr5)/2
+    return int((a**n-b**n)/sqr5)
+
+# ---- Example Usage
+print fib(1) # 1
+print fib(2) # 1
+print fib(3) # 2
+print fib(4) # 3
+print fib(5) # 5
+print fib(6) # 8
+```
+``` python
+# <Binary Search Recursive>
+def binSearch(a, s, e, key):
+    if s > e:
+        return -1
+    mid = (s + e)/2
+    if a[mid] == key:
+        return mid
+    elif key < a[mid]:
+        return binSearch(a, s, mid-1, key)
+    elif key > a[mid]:
+        return binSearch(a, mid+1, e, key)
+
+# --- Example Usage
+a = [1,5,17,22,35,70]
+print binSearch(a, 0, len(a)-1, -5)  # -1
+print binSearch(a, 0, len(a)-1, 1)   #  0
+print binSearch(a, 0, len(a)-1, 7)   # -1
+print binSearch(a, 0, len(a)-1, 70)  #  5
+print binSearch(a, 0, len(a)-1, 999) # -1
+
+
+# <Binary Search Iterative>
+def binarySearch(a, s, e, key):
+    res = -1
+    while s <= e:
+        mid = (s + e)/2
+        if a[mid] == key:
+            res = mid
+            break
+        elif key < a[mid]:
+            e = mid - 1
+        elif key > a[mid]:
+            s = mid + 1
+    return res
+
+# --- Example Usage
+a = [1,5,17,22,35,70]
+print binarySearch(a, 0, len(a)-1, -5)  # -1
+print binarySearch(a, 0, len(a)-1, 1)   #  0
+print binarySearch(a, 0, len(a)-1, 7)   # -1
+print binarySearch(a, 0, len(a)-1, 70)  #  5
+print binarySearch(a, 0, len(a)-1, 999) # -1
+```
 ## ./Graph_Theory
 ``` python
 def disjoint_set():
@@ -234,7 +414,78 @@ def disjoint_set():
         x,y = map(int,raw_input().split())
         union(x,y)
 ```
+## ./Strings
 ## ./Dynamic_Programming
+``` python
+# < Count Subarrays summing to 0 >
+def countSubArrays(a, n):
+    seen = {}
+
+    rs = 0
+    cnt = 0
+    for i in xrange(n):
+        rs += a[i]
+        if rs == 0: cnt += 1
+
+        if rs in seen:
+            cnt += seen[rs]
+            seen[rs] += 1
+        else:
+            seen[rs] = 1
+
+    return cnt
+
+# ---- Example usage
+a = [6, 3, -1, -3, 4, -2, 2, 4, 6, -12, -7]
+print countSubArrays(a, len(a))
+
+
+
+# < Print Subbarrays summing to 0 >
+def printSubArrays(a, n):
+    seen = {}
+
+    rs = 0
+    out = []
+    for i in xrange(n):
+        rs += a[i]
+        if rs == 0: out.append((0,i))
+
+        if rs in seen:
+            for old in seen[rs]:
+                out.append((old+1,i))
+            seen[rs].append(i)
+        else:
+            seen[rs] = [i]
+
+    for pair in out:
+        print pair
+
+# ---- Example usage
+a = [6, 3, -1, -3, 4, -2, 2, 4, 6, -12, -7]
+printSubArrays(a, len(a))
+```
+``` python
+# < Longest palindromic subsequence >
+def LPS(a,n):
+    fast = [[0 for x in xrange(n)] for y in xrange(n) ]
+    for i in xrange(n): fast[i][i] = 1
+    
+    for size in xrange(2,n+1):
+        for s in xrange(n-size+1):
+            e = s+size-1
+            if a[s] == a[e] and size == 2:
+                fast[s][e] = 2
+            elif a[s] == a[e]:
+                fast[s][e] = fast[s+1][e-1] + 2
+            else:
+                fast[s][e] = max(fast[s][e-1],fast[s+1][e])
+    print fast[0][n-1]
+
+# --- Example usage
+string = raw_input()
+print LPS(string,len(string))
+```
 ## ./Sorting
 ``` python
 def do_quicksort(A):
